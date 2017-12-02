@@ -48,27 +48,26 @@
             password: password
           }
         })
-        .then((res) => { 
-          if (res.status !== 200){
-            this.$message.error('网络或服务器问题：'+res.status)
-            return ;
+        .then((res) => {
+          if (res.status !== 200) {
+            this.$message.error('网络或服务器问题：' + res.status)
+            return
           }
-          if (res.data.error_code === 0){
+          if (res.data.error_code === 0) {
             this.$message('登陆成功')
-            //TODO:处理token
-            this.$cookie.set('token',res.data.data.token)
-            this.$router.push({path:'/admin'})//编程式导航至控制页面
-          }else{
+            // TODO:处理token
+            this.$cookie.set('token', res.data.data.token)
+            this.$router.push({path: '/admin'}) // 编程式导航至控制页面
+          } else {
             this.$message(res.data.message)
-          } 
-         })
-        .catch((err) => { 
+          }
+        })
+        .catch((err) => {
           this.$message.error('网络或服务器问题')
           console.log(err)
-         })
-        
+        })
       },
-      register(){
+      register () {
         this.$message.error('注册功能仍在开发中')
       }
     }
