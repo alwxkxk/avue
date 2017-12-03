@@ -1,29 +1,40 @@
 <template>
   <el-container class="height-100">
-    <el-header>后台管理系统</el-header>
+    <el-header><avue-header></avue-header></el-header>
     <el-container>
       <el-aside width="200px">
-        <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
+        <el-menu default-active="overview" class="el-menu-vertical-demo" @select="handleSelect">
+          <el-menu-item index="overview">
+            <span slot="title">
+              <i class="el-icon-menu"></i>纵览</span>
+          </el-menu-item>
           <el-submenu index="1">
             <span slot="title">
               <i class="el-icon-menu"></i>导航一</span>
             <el-menu-item index="1-1">选项1</el-menu-item>
             <el-menu-item index="1-2">选项2</el-menu-item>
             <el-menu-item index="1-3">选项3</el-menu-item>
+            <el-menu-item index="1-4">选项3</el-menu-item>
+            <el-menu-item index="1-5">选项3</el-menu-item>
           </el-submenu>
-          <el-menu-item index="2">
+
+          <el-menu-item index="setting">
             <span slot="title">
-              <i class="el-icon-menu"></i>导航二</span>
+              <i class="el-icon-setting"></i>系统设置</span>
           </el-menu-item>
-          <el-menu-item index="3">
+          <el-menu-item index="log">
             <span slot="title">
-              <i class="el-icon-setting"></i>导航三</span>
+              <i class="el-icon-setting"></i>日志管理</span>
+          </el-menu-item>
+          <el-menu-item index="device">
+            <span slot="title">
+              <i class="el-icon-setting"></i>设备管理</span>
           </el-menu-item>
         </el-menu>
       </el-aside>
       <el-container>
-        <el-main>Main</el-main>
-        <el-footer>后台管理系统</el-footer>
+        <el-main><router-view></router-view></el-main>
+        <el-footer height="20px"></el-footer>
       </el-container>
     </el-container>
   </el-container>
@@ -38,16 +49,16 @@
   }
 
   .el-footer {
-    background-color: #B4BCCC;
+    background-color: #409EFF;
     color: black;
     text-align: center;
-    line-height: 20px;
+    height: 20px;
   }
 
   .el-aside {
-    background-color: #D3DCE6;
+    background-color: white;
     color: #333;
-    text-align: center;
+    text-align: left;
     line-height: 200px;
   }
 
@@ -55,7 +66,7 @@
     background-color: #E9EEF3;
     color: #333;
     text-align: center;
-    line-height: 160px;
+    
   }
 
   body>.el-container {
@@ -73,14 +84,21 @@
 </style>
 
 <script>
+  import Header from '@/components/Header'
   export default {
     methods: {
-      handleOpen (key, keyPath) {
-        console.log(key, keyPath)
-      },
-      handleClose (key, keyPath) {
-        console.log(key, keyPath)
+
+      handleSelect (key) {
+        console.log('select menu:', key)
+        if (key === 'overview') {
+          console.log('in to:')
+          this.$router.push({path: '/admin/overview'}) // 编程式导航至控制页面
+        }
       }
+    },
+    components: {
+      'avue-header': Header
     }
+
   }
 </script>
