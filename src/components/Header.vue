@@ -43,17 +43,42 @@
 </style>
 
 <script>
-  export default {
-    name: 'Header',
-    data () {
-      return {
-        msg: 'Welcome to Your Vue.js App'
-      }
-    },
-    methods: {
-      handleCommand (command) {
-        this.$message('click on item ' + command)
+import axios from 'axios'
+import { url } from '../config/config.js'
+export default {
+  name: 'Header',
+  data () {
+    return {
+      msg: 'Welcome to Your Vue.js App'
+    }
+  },
+  methods: {
+    handleCommand (command) {
+    // this.$message('click on item ' + command)
+      if (command === 'logout') {
+        axios({
+          method: 'delete',
+          url: url.logout,
+          withCredentials: true // axios请求携带 cookie
+        })
+        .then((res) => {
+          if (res.status !== 200) {
+            this.$message.error('网络或服务器问题：' + res.status)
+            return
+          }
+          if (res.data.error_code === 0) {
+            this.$message('成功退出')
+            this.$router.replace({path: '/'})
+          } else {
+            this.$message(res.data.message)
+          }
+        })
+        .catch((err) => {
+          this.$message.error('网络或服务器问题')
+          console.log(err)
+        })
       }
     }
   }
+}
 </script>

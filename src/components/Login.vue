@@ -55,8 +55,6 @@
           }
           if (res.data.error_code === 0) {
             this.$message('登陆成功')
-            // TODO:处理token
-            this.$cookie.set('token', res.data.data.token)
             this.$router.push({path: '/admin'}) // 编程式导航至控制页面
           } else {
             this.$message(res.data.message)
