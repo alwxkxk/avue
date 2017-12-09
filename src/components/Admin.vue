@@ -65,8 +65,8 @@
   .el-main {
     background-color: #E9EEF3;
     color: #333;
-    text-align: center;
-    
+    padding: 2px;
+    height: 100%;
   }
 
   body>.el-container {

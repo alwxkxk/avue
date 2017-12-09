@@ -2,7 +2,7 @@
     <el-table class="log-message-table"
       :data="logList"
       border="true"
-      max-height="450"
+      height="100%"
       >
       <el-table-column
       align="center"
@@ -22,6 +22,7 @@
 <style scoped>
   .log-message-table{
     width: 100%;
+    height: 100%;
     text-align: center;
   }
 </style>
