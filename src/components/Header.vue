@@ -4,10 +4,10 @@
     <div>
       <el-dropdown @command="handleCommand">
         <el-button class="avatar">
-            <el-badge is-dot="true" class="avatar-badge"></el-badge>
+            <el-badge is-dot class="avatar-badge"></el-badge>
         </el-button>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item command="message">消息<el-badge is-dot="true" class="item-badge"></el-badge></el-dropdown-item>
+          <el-dropdown-item command="message">消息<el-badge is-do class="item-badge"></el-badge></el-dropdown-item>
           <el-dropdown-item command="setting">账号设置</el-dropdown-item>
           <el-dropdown-item command="logout">退出</el-dropdown-item>
         </el-dropdown-menu>

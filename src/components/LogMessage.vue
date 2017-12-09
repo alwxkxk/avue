@@ -1,7 +1,7 @@
 <template>
     <el-table class="log-message-table"
       :data="logList"
-      border="true"
+      border
       height="100%"
       >
       <el-table-column
