@@ -4,6 +4,7 @@ import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import Login from '@/components/Login'
 import Admin from '@/components/Admin'
+import LogMessage from '@/components/LogMessage'
 
 Vue.use(Router)
 
@@ -22,6 +23,10 @@ export default new Router({
         {
           path: 'overview',
           component: HelloWorld
+        },
+        {
+          path: 'logMessage',
+          component: LogMessage
         }
       ]
     }

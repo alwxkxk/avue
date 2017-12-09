@@ -22,7 +22,7 @@
             <span slot="title">
               <i class="el-icon-setting"></i>系统设置</span>
           </el-menu-item>
-          <el-menu-item index="log">
+          <el-menu-item index="logMessage">
             <span slot="title">
               <i class="el-icon-setting"></i>日志管理</span>
           </el-menu-item>
@@ -85,19 +85,22 @@
 
 <script>
   import Header from '@/components/Header'
+  import LogMessage from '@/components/LogMessage'
   export default {
     methods: {
 
       handleSelect (key) {
         console.log('select menu:', key)
         if (key === 'overview') {
-          console.log('in to:')
           this.$router.push({path: '/admin/overview'}) // 编程式导航至控制页面
+        } else if (key === 'logMessage') {
+          this.$router.push({path: '/admin/logMessage'}) // 编程式导航至控制页面
         }
       }
     },
     components: {
-      'avue-header': Header
+      'avue-header': Header,
+      'avue-log-message': LogMessage
     }
 
   }
