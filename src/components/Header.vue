@@ -8,7 +8,7 @@
         </el-button>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item command="message">消息<el-badge is-do class="item-badge"></el-badge></el-dropdown-item>
-          <el-dropdown-item command="setting">账号设置</el-dropdown-item>
+          <el-dropdown-item command="accountSetting">账号设置</el-dropdown-item>
           <el-dropdown-item command="logout">退出</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -77,6 +77,8 @@ export default {
           this.$message.error('网络或服务器问题')
           console.log(err)
         })
+      } else if (command === 'accountSetting') {
+        this.$router.push({path: '/admin/accountSetting'})
       }
     }
   }

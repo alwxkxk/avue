@@ -5,6 +5,7 @@ import HelloWorld from '@/components/HelloWorld'
 import Login from '@/components/Login'
 import Admin from '@/components/Admin'
 import LogMessage from '@/components/LogMessage'
+import AccountSetting from '@/components/AccountSetting'
 
 Vue.use(Router)
 
@@ -27,6 +28,10 @@ export default new Router({
         {
           path: 'logMessage',
           component: LogMessage
+        },
+        {
+          path: 'accountSetting',
+          component: AccountSetting
         }
       ]
     }
