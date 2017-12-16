@@ -86,9 +86,9 @@
 <script>
   import Header from '@/components/Header'
   import LogMessage from '@/components/LogMessage'
+
   export default {
     methods: {
-
       handleSelect (key) {
         console.log('select menu:', key)
         if (key === 'overview') {

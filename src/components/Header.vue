@@ -3,7 +3,7 @@
     <div>系统控制</div>
     <div>
       <el-dropdown @command="handleCommand">
-        <el-button class="avatar">
+        <el-button class="avatar" :style="backgroundImage">
             <el-badge is-dot class="avatar-badge"></el-badge>
         </el-button>
         <el-dropdown-menu slot="dropdown">
@@ -35,7 +35,8 @@
 
   .avatar {
     background-image: url("../assets/logo.png");
-    background-size: 100%;
+    background-repeat:no-repeat;
+    background-size: cover;
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -49,7 +50,13 @@ export default {
   name: 'Header',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      backgroundImage: 'background-image: url("../assets/logo.png");'
+    }
+  },
+  created () {
+    const user = JSON.parse(window.localStorage.getItem('user'))
+    if (user.avatar) {
+      this.backgroundImage = 'background-image:url("' + url.root + url.getImage + '/' + user.avatar + '");'
     }
   },
   methods: {

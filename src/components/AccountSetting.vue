@@ -15,7 +15,7 @@
           </el-upload>
         </div>
         <el-col :span="16" :offset="1">
-          <el-input v-model="nickName">
+          <el-input v-model="user.nickName">
             <i class="el-icon-edit el-input__icon" slot="suffix">
             </i>
           </el-input>
@@ -25,7 +25,7 @@
       <el-col :span="18" class="pd10">
         <el-col :span="2">用户名：</el-col>
         <el-col :span="8">
-          <el-input disabled v-model="name"></el-input>
+          <el-input disabled v-model="user.name"></el-input>
         </el-col>
         <el-col :span="4" :offset="1">
           <el-button round>修改密码</el-button>
@@ -34,7 +34,7 @@
       <el-col :span="18" class="pd10">
         <el-col :span="2">邮箱：</el-col>
         <el-col :span="8">
-          <el-input v-model="email"></el-input>
+          <el-input v-model="user.email"></el-input>
         </el-col>
         <el-col :span="4" :offset="1">
           <el-button round>验证邮箱</el-button>
@@ -43,7 +43,7 @@
       <el-col :span="18" class="pd10">
         <el-col :span="2">手机：</el-col>
         <el-col :span="8">
-          <el-input v-model="phone"></el-input>
+          <el-input v-model="user.phone"></el-input>
         </el-col>
         <el-col :span="4" :offset="1">
           <el-button round>验证手机</el-button>
@@ -103,13 +103,25 @@
     name: 'AccountSetting',
     data () {
       return {
-        avatarUrl: 'http://img3.duitang.com/uploads/item/201602/27/20160227192212_SmNWM.jpeg',
-        name: 'alwxkxk',
-        email: '',
-        phone: '',
-        nickName: 'alwxkxk',
+        avatarUrl: '',
+        user: {
+          name: '',
+          email: '',
+          phone: '',
+          nickName: '',
+          avatar: ''
+        },
         action: url.postImage
       }
+    },
+    created () {
+      const user = JSON.parse(window.localStorage.getItem('user'))
+      console.log('created', user)
+      this.user.name = user.name
+      this.user.email = user.email
+      this.user.phone = user.phone
+      this.user.nickName = user.nick_name
+      this.avatarUrl = url.root + url.getImage + '/' + user.avatar
     },
     methods: {
       handleAvatarSuccess (response, file) {
