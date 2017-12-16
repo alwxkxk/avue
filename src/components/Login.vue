@@ -38,8 +38,8 @@
     },
     methods: {
       login () {
-        let name = this.loginForm.name
-        let password = this.loginForm.password
+        const name = this.loginForm.name
+        const password = this.loginForm.password
         axios({
           method: 'post',
           url: url.login,
@@ -54,11 +54,11 @@
             return
           }
           if (res.data.error_code === 0) {
-            this.$message('登陆成功')
+            this.$message.success('登陆成功，请点击登陆。')
             window.localStorage.setItem('user', JSON.stringify(res.data.data))// 将用户信息保存到本地
             this.$router.push({path: '/admin'}) // 编程式导航至控制页面
           } else {
-            this.$message(res.data.message)
+            this.$message.error(res.data.message)
           }
         })
         .catch((err) => {
@@ -67,7 +67,31 @@
         })
       },
       register () {
-        this.$message.error('注册功能仍在开发中')
+        const name = this.loginForm.name
+        const password = this.loginForm.password
+        axios({
+          method: 'post',
+          url: url.register,
+          data: {
+            name: name,
+            password: password
+          }
+        })
+        .then((res) => {
+          if (res.status !== 200) {
+            this.$message.error('网络或服务器问题：' + res.status)
+            return
+          }
+          if (res.data.error_code === 0) {
+            this.$message.success('注册成功')
+          } else {
+            this.$message.error(res.data.message)
+          }
+        })
+        .catch((err) => {
+          this.$message.error('网络或服务器问题')
+          console.log(err)
+        })
       }
     }
   }
