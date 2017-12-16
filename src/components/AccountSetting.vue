@@ -3,10 +3,17 @@
     <el-row class="avue-row">
       <el-col :span="6">
         <div class="avatar">
-          <img :src="avatarUrl"></img>
-          <p>上传图片</p>
+            <img :src="avatarUrl">
+            </img>
+            <el-upload
+            class="uploadButton"
+            :action="action"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            >
+            <el-button  size="small">上传图片</el-button>
+          </el-upload>
         </div>
-
         <el-col :span="16" :offset="1">
           <el-input v-model="nickName">
             <i class="el-icon-edit el-input__icon" slot="suffix">
@@ -61,14 +68,17 @@
     border-radius: 50%;
     margin: 1em;
   }
-  .avatar:hover p{display: block;}
-  .avatar p {
-    color: white;
+
+  .avatar:hover .uploadButton {
+    display: block;
+  }
+
+  .avatar .uploadButton {
+    color: black;
     position: absolute;
-    top: 4em;
-    left: 4em;
-    background-color: black;
-    opacity: 0.4;
+    top: 8em;
+    left: 3.5em;
+    opacity: 0.9;
     display: none;
 
   }
@@ -88,6 +98,7 @@
 </style>
 
 <script>
+  import { url } from '../config/config.js'
   export default {
     name: 'AccountSetting',
     data () {
@@ -96,7 +107,14 @@
         name: 'alwxkxk',
         email: '',
         phone: '',
-        nickName: 'alwxkxk'
+        nickName: 'alwxkxk',
+        action: url.postImage
+      }
+    },
+    methods: {
+      handleAvatarSuccess (response, file) {
+        console.log(response, file)
+        this.avatarUrl = url.root + url.getImage + '/' + response.data.imageName
       }
     }
   }
