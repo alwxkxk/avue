@@ -111,7 +111,7 @@
           nickName: '',
           avatar: ''
         },
-        action: url.postImage
+        action: url.postAvatar
       }
     },
     created () {
