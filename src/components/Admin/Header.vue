@@ -34,7 +34,7 @@
   }
 
   .avatar {
-    background-image: url("../assets/logo.png");
+    background-image: url("../../assets/logo.png");
     background-repeat:no-repeat;
     background-size: cover;
     width: 40px;
@@ -45,12 +45,12 @@
 
 <script>
 import axios from 'axios'
-import { url } from '../config/config.js'
+import { url } from '@/config/config.js'
 export default {
   name: 'Header',
   data () {
     return {
-      backgroundImage: 'background-image: url("../assets/logo.png");'
+      backgroundImage: 'background-image: url("../../assets/logo.png");'
     }
   },
   created () {

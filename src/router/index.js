@@ -3,9 +3,9 @@ import Router from 'vue-router'
 
 import HelloWorld from '@/components/HelloWorld'
 import Login from '@/components/Login'
-import Admin from '@/components/Admin'
-import LogMessage from '@/components/LogMessage'
-import AccountSetting from '@/components/AccountSetting'
+import Admin from '@/components/Admin/Admin'
+import LogMessage from '@/components/Admin/LogMessage'
+import AccountSetting from '@/components/Admin/AccountSetting'
 
 Vue.use(Router)
 

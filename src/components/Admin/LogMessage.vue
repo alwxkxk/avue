@@ -28,7 +28,7 @@
 </style>
 <script>
 import axios from 'axios'
-import { url } from '../config/config.js'
+import { url } from '@/config/config.js'
 
 export default {
   name: 'LogMessage',

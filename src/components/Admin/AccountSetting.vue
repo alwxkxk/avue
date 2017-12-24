@@ -98,7 +98,7 @@
 </style>
 
 <script>
-  import { url } from '../config/config.js'
+  import { url } from '@/config/config.js'
   export default {
     name: 'AccountSetting',
     data () {

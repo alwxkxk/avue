@@ -84,8 +84,8 @@
 </style>
 
 <script>
-  import Header from '@/components/Header'
-  import LogMessage from '@/components/LogMessage'
+  import Header from '@/components/Admin/Header'
+  import LogMessage from '@/components/Admin/LogMessage'
 
   export default {
     methods: {
