@@ -35,7 +35,7 @@
 
   .avatar {
     background-repeat:no-repeat;
-    background-size: cover;
+    background-size: 100% 100%;
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -46,6 +46,7 @@
 import logo from '@/assets/logo.png'
 import axios from 'axios'
 import { url } from '@/config/config.js'
+import bus from '@/assets/bus.js'
 export default {
   name: 'Header',
   data () {
@@ -55,10 +56,15 @@ export default {
   },
   created () {
     const user = JSON.parse(window.localStorage.getItem('user')) || {}
+    const that = this
     if (user.avatar) {
       console.log(user)
       this.backgroundImage = 'background-image:url("' + url.getImage + '/' + user.avatar + '");'
     }
+    bus.$on('changeAvatar', function (url) {
+      that.backgroundImage = 'background-image:url("' + url + '");'
+      console.log('changeAvatar', that)
+    })
   },
   methods: {
     handleCommand (command) {

@@ -94,6 +94,7 @@
 <script>
   import logo from '@/assets/logo.png'
   import { url } from '@/config/config.js'
+  import bus from '@/assets/bus.js'
   export default {
     name: 'AccountSetting',
     data () {
@@ -122,6 +123,7 @@
       handleAvatarSuccess (response, file) {
         console.log(response, file)
         this.avatarUrl = url.getImage + '/' + response.data.imageName
+        bus.$emit('changeAvatar', this.avatarUrl)
       }
     }
   }
