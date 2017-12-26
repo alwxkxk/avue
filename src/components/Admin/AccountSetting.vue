@@ -116,12 +116,12 @@
       this.user.email = user.email
       this.user.phone = user.phone
       this.user.nickName = user.nick_name
-      this.avatarUrl = user.avatar ? url.root + url.getImage + '/' + user.avatar : logo
+      this.avatarUrl = user.avatar ? url.getImage + '/' + user.avatar : logo
   },
     methods: {
       handleAvatarSuccess (response, file) {
         console.log(response, file)
-        this.avatarUrl = url.root + url.getImage + '/' + response.data.imageName
+        this.avatarUrl = url.getImage + '/' + response.data.imageName
       }
     }
   }

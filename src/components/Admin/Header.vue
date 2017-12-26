@@ -57,7 +57,7 @@ export default {
     const user = JSON.parse(window.localStorage.getItem('user')) || {}
     if (user.avatar) {
       console.log(user)
-      this.backgroundImage = 'background-image:url("' + url.root + url.getImage + '/' + user.avatar + '");'
+      this.backgroundImage = 'background-image:url("' + url.getImage + '/' + user.avatar + '");'
     }
   },
   methods: {
