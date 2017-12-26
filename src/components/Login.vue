@@ -1,5 +1,5 @@
 <template>
-  <el-row type="flex" justify="center" align="middle" class="height-100">
+  <el-row type="flex" justify="center" align="middle" class="h100">
     <el-col :span="7" class="login-container">
       <div class="login-title">系统后台</div>
       <el-form id="login-form" :model="loginForm">
@@ -51,7 +51,7 @@
         .then((res) => {
           if (res.status !== 200) {
             this.$message.error('网络或服务器问题：' + res.status)
-            return
+            return Promise.reject('网络或服务器问题：' + res.status)
           }
           if (res.data.error_code === 0) {
             this.$message.success('登陆成功')
@@ -63,6 +63,7 @@
         })
         .catch((err) => {
           this.$message.error('网络或服务器问题')
+          window.localStorage.removeItem('user')// 登陆失败会清除本地记录
           console.log(err)
         })
       },
