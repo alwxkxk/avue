@@ -15,11 +15,30 @@
         </el-form-item>
         <div class="login-form-btn">
           <el-button type="primary" @click="login">登陆</el-button>
-          <el-button @click="register">注册</el-button>
+          <el-button @click="registerFormVisible=true">注册</el-button>
         </div>
       </el-form>
     </el-col>
+    <!-- 用户注册对话弹窗 -->
+    <el-dialog title="账号注册" :visible="registerFormVisible" @close="registerFormVisible=false" width="30%">
+      <el-form :model="registerForm" label-width="80px" :label-position="left">
+        <el-form-item label="账号">
+          <el-input v-model="registerForm.name" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="密码">
+          <el-input  type="password" v-model="registerForm.password" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="重输密码">
+          <el-input  type="password" v-model="registerForm.passwordAgain" auto-complete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="registerFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="registerComfirm">确 定</el-button>
+      </div>
+    </el-dialog>
   </el-row>
+
 
 </template>
 
@@ -33,6 +52,12 @@
         loginForm: {
           name: '',
           password: ''
+        },
+        registerFormVisible: false,
+        registerForm: {
+          name: '',
+          password: '',
+          passwordAgain: ''
         }
       }
     },
@@ -48,28 +73,32 @@
             password: password
           }
         })
-        .then((res) => {
-          if (res.status !== 200) {
-            this.$message.error('网络或服务器问题：' + res.status)
-            return Promise.reject('网络或服务器问题：' + res.status)
-          }
-          if (res.data.error_code === 0) {
-            this.$message.success('登陆成功')
-            window.localStorage.setItem('user', JSON.stringify(res.data.data))// 将用户信息保存到本地
-            this.$router.push({path: '/admin'}) // 编程式导航至控制页面
-          } else {
-            this.$message.error(res.data.message)
-          }
-        })
-        .catch((err) => {
-          this.$message.error('网络或服务器问题')
-          window.localStorage.removeItem('user')// 登陆失败会清除本地记录
-          console.log(err)
-        })
+          .then((res) => {
+            if (res.status !== 200) {
+              this.$message.error('网络或服务器问题：' + res.status)
+              return Promise.reject('网络或服务器问题：' + res.status)
+            }
+            if (res.data.error_code === 0) {
+              this.$message.success('登陆成功')
+              window.localStorage.setItem('user', JSON.stringify(res.data.data))// 将用户信息保存到本地
+              this.$router.push({ path: '/admin' }) // 编程式导航至控制页面
+            } else {
+              this.$message.error(res.data.message)
+            }
+          })
+          .catch((err) => {
+            this.$message.error('网络或服务器问题')
+            window.localStorage.removeItem('user')// 登陆失败会清除本地记录
+            console.log(err)
+          })
       },
-      register () {
-        const name = this.loginForm.name
-        const password = this.loginForm.password
+      registerComfirm () {
+        console.log(this.registerForm)
+        const name = this.registerForm.name
+        const password = this.registerForm.password
+        if (password !== this.registerForm.passwordAgain) {
+          return this.$message.error('两次密码不一致')
+        }
         axios({
           method: 'post',
           url: url.register,
@@ -77,19 +106,18 @@
             name: name,
             password: password
           }
-        })
-        .then((res) => {
+        }).then((res) => {
           if (res.status !== 200) {
             this.$message.error('网络或服务器问题：' + res.status)
             return
           }
           if (res.data.error_code === 0) {
             this.$message.success('注册成功，请点击登陆。')
+            this.registerFormVisible = false
           } else {
             this.$message.error(res.data.message)
           }
-        })
-        .catch((err) => {
+        }).catch((err) => {
           this.$message.error('网络或服务器问题')
           console.log(err)
         })
