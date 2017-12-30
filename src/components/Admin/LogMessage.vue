@@ -27,9 +27,7 @@
   }
 </style>
 <script>
-import axios from 'axios'
-import { url } from '@/config/config.js'
-
+import request from '@/assets/request.js'
 export default {
   name: 'LogMessage',
   data () {
@@ -38,19 +36,15 @@ export default {
     }
   },
   created () {
-    axios({
-      method: 'get',
-      url: url.log,
-      withCredentials: true // axios请求携带 cookie
+    request.log()
+    .then(res => {
+      console.log(res)
+      this.logList = res.data.data
     })
-        .then(res => {
-          console.log(res)
-          this.logList = res.data.data
-        })
-        .catch(err => {
-          console.log(err)
-          this.$message.error('网络或服务器问题')
-        })
+    .catch(err => {
+      console.log(err)
+      this.$message.error('网络或服务器问题')
+    })
   },
 
   methods: {

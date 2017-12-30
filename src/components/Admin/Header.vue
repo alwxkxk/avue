@@ -44,7 +44,7 @@
 
 <script>
 import logo from '@/assets/logo.png'
-import axios from 'axios'
+import request from '@/assets/request.js'
 import { url } from '@/config/config.js'
 import bus from '@/assets/bus.js'
 export default {
@@ -70,11 +70,7 @@ export default {
     handleCommand (command) {
     // this.$message('click on item ' + command)
       if (command === 'logout') {
-        axios({
-          method: 'delete',
-          url: url.logout,
-          withCredentials: true // axios请求携带 cookie
-        })
+        request.logout()
         .then((res) => {
           if (res.status !== 200) {
             this.$message.error('网络或服务器问题：' + res.status)

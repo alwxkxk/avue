@@ -45,8 +45,7 @@
 
 
 <script>
-  import axios from 'axios'
-  import { url } from '../config/config.js'
+  import request from '@/assets/request.js'
   export default {
     data () {
       return {
@@ -66,32 +65,25 @@
       login () {
         const name = this.loginForm.name
         const password = this.loginForm.password
-        axios({
-          method: 'post',
-          url: url.login,
-          data: {
-            name: name,
-            password: password
+        request.login(name, password)
+        .then((res) => {
+          if (res.status !== 200) {
+            this.$message.error('网络或服务器问题：' + res.status)
+            return Promise.reject('网络或服务器问题：' + res.status)
+          }
+          if (res.data.error_code === 0) {
+            this.$message.success('登陆成功')
+            window.localStorage.setItem('user', JSON.stringify(res.data.data))// 将用户信息保存到本地
+            this.$router.push({ path: '/admin' }) // 编程式导航至控制页面
+          } else {
+            this.$message.error(res.data.message)
           }
         })
-          .then((res) => {
-            if (res.status !== 200) {
-              this.$message.error('网络或服务器问题：' + res.status)
-              return Promise.reject('网络或服务器问题：' + res.status)
-            }
-            if (res.data.error_code === 0) {
-              this.$message.success('登陆成功')
-              window.localStorage.setItem('user', JSON.stringify(res.data.data))// 将用户信息保存到本地
-              this.$router.push({ path: '/admin' }) // 编程式导航至控制页面
-            } else {
-              this.$message.error(res.data.message)
-            }
-          })
-          .catch((err) => {
-            this.$message.error('网络或服务器问题')
-            window.localStorage.removeItem('user')// 登陆失败会清除本地记录
-            console.log(err)
-          })
+        .catch((err) => {
+          this.$message.error('网络或服务器问题')
+          window.localStorage.removeItem('user')// 登陆失败会清除本地记录
+          console.log(err)
+        })
       },
       registerComfirm () {
         console.log(this.registerForm)
@@ -100,14 +92,8 @@
         if (password !== this.registerForm.passwordAgain) {
           return this.$message.error('两次密码不一致')
         }
-        axios({
-          method: 'post',
-          url: url.register,
-          data: {
-            name: name,
-            password: password
-          }
-        }).then((res) => {
+        request.register(name, password)
+        .then((res) => {
           if (res.status !== 200) {
             this.$message.error('网络或服务器问题：' + res.status)
             return
@@ -130,24 +116,21 @@
           inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
           inputErrorMessage: '邮箱格式不正确'
         }).then(({ value }) => {
-          axios({
-            method: 'delete',
-            url: url.forgetPassword + value
+          request.forgetPassword(value)
+          .then(res => {
+            if (res.status !== 200) {
+              this.$message.error('网络或服务器问题：' + res.status)
+              return
+            }
+            if (res.data.error_code === 0) {
+              this.$message.success('请查收邮件')
+            } else {
+              this.$message.error(res.data.message)
+            }
           })
-        .then(res => {
-          if (res.status !== 200) {
-            this.$message.error('网络或服务器问题：' + res.status)
-            return
-          }
-          if (res.data.error_code === 0) {
-            this.$message.success('请查收邮件')
-          } else {
-            this.$message.error(res.data.message)
-          }
-        })
-        .catch(err => {
-          this.$message.error(err)
-        })
+          .catch(err => {
+            this.$message.error(err)
+          })
         }).catch(() => {
           this.$message.info('取消输入')
         })

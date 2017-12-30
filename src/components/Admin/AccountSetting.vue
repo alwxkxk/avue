@@ -46,15 +46,15 @@
           <el-input v-model="user.phone"></el-input>
         </el-col>
         <el-col :span="4" :offset="1">
-          <el-button round>验证手机</el-button>
+          <el-button round idsabled>验证手机</el-button>
         </el-col>
       </el-col>
       <el-col :span="18">
         <el-col :span="4">
-          <el-button round>绑定QQ</el-button>
+          <el-button round disabled>绑定QQ</el-button>
         </el-col>
         <el-col :span="4">
-          <el-button round>绑定微信</el-button>
+          <el-button round disabled>绑定微信</el-button>
         </el-col>
       </el-col>
     </el-row>
