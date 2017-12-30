@@ -17,11 +17,12 @@
           <el-button type="primary" @click="login">登陆</el-button>
           <el-button @click="registerFormVisible=true">注册</el-button>
         </div>
+        <el-button class="forget-password-string" type="text" @click="forgetPassword">忘记密码？</el-button>
       </el-form>
     </el-col>
     <!-- 用户注册对话弹窗 -->
     <el-dialog title="账号注册" :visible="registerFormVisible" @close="registerFormVisible=false" width="30%">
-      <el-form :model="registerForm" label-width="80px" :label-position="left">
+      <el-form :model="registerForm" label-width="80px">
         <el-form-item label="账号">
           <el-input v-model="registerForm.name" auto-complete="off"></el-input>
         </el-form-item>
@@ -121,12 +122,41 @@
           this.$message.error('网络或服务器问题')
           console.log(err)
         })
+      },
+      forgetPassword () {
+        this.$prompt('请输入用户邮箱', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
+          inputErrorMessage: '邮箱格式不正确'
+        }).then(({ value }) => {
+          axios({
+            method: 'delete',
+            url: url.forgetPassword + value
+          })
+        .then(res => {
+          if (res.status !== 200) {
+            this.$message.error('网络或服务器问题：' + res.status)
+            return
+          }
+          if (res.data.error_code === 0) {
+            this.$message.success('请查收邮件')
+          } else {
+            this.$message.error(res.data.message)
+          }
+        })
+        .catch(err => {
+          this.$message.error(err)
+        })
+        }).catch(() => {
+          this.$message.info('取消输入')
+        })
       }
     }
   }
 </script>
 
-<style>
+<style scoped>
   .login-container {
     border: 1px solid #D8DCE5;
     background-color: white;
@@ -150,5 +180,11 @@
     display: flex;
     justify-content: space-around;
     margin: 10px;
+  }
+
+  .forget-password-string{
+    font-size: 0.75em;
+    right: -80%;
+    position: relative;
   }
 </style>
