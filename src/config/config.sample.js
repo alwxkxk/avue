@@ -1,11 +1,6 @@
 module.exports = {
   url: {
-    test: '',
-    register: '',
-    login: '',
-    logout: '',
-    log: '',
-    postImage: '',
-    getImage: ''
+    postAvatar: '/api/avatar',
+    getImage: '/api/image'
   }
 }
