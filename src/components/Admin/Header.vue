@@ -58,12 +58,10 @@ export default {
     const user = JSON.parse(window.localStorage.getItem('user')) || {}
     const that = this
     if (user.avatar) {
-      console.log(user)
       this.backgroundImage = 'background-image:url("' + url.getImage + '/' + user.avatar + '");'
     }
     bus.$on('changeAvatar', function (url) {
       that.backgroundImage = 'background-image:url("' + url + '");'
-      console.log('changeAvatar', that)
     })
   },
   methods: {

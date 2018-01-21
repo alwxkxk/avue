@@ -20,7 +20,7 @@
         <el-button class="forget-password-string" type="text" @click="forgetPassword">忘记密码？</el-button>
       </el-form>
     </el-col>
-    <!-- 用户注册对话弹窗 -->
+    <!-- 用户注册对话弹窗 start-->
     <el-dialog title="账号注册" :visible="registerFormVisible" @close="registerFormVisible=false" width="30%">
       <el-form :model="registerForm" label-width="80px">
         <el-form-item label="账号">
@@ -38,6 +38,7 @@
         <el-button type="primary" @click="registerComfirm">确 定</el-button>
       </div>
     </el-dialog>
+    <!-- 用户注册对话弹窗 end-->
   </el-row>
 
 
@@ -67,10 +68,6 @@
         const password = this.loginForm.password
         request.login(name, password)
         .then((res) => {
-          if (res.status !== 200) {
-            this.$message.error('网络或服务器问题：' + res.status)
-            return Promise.reject('网络或服务器问题：' + res.status)
-          }
           if (res.data.error_code === 0) {
             this.$message.success('登陆成功')
             window.localStorage.setItem('user', JSON.stringify(res.data.data))// 将用户信息保存到本地
@@ -115,13 +112,10 @@
           cancelButtonText: '取消',
           inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
           inputErrorMessage: '邮箱格式不正确'
-        }).then(({ value }) => {
+        })
+        .then(({ value }) => {
           request.forgetPassword(value)
           .then(res => {
-            if (res.status !== 200) {
-              this.$message.error('网络或服务器问题：' + res.status)
-              return
-            }
             if (res.data.error_code === 0) {
               this.$message.success('请查收邮件')
             } else {

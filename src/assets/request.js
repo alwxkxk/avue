@@ -2,11 +2,14 @@ import axios from 'axios'
 const apiList = {
   register: {method: 'post', url: '/api/user'},
   login: {method: 'post', url: '/api/token'},
-  logout: {method: 'delete', url: '/api/token', withCredentials: true},
+  logout: {method: 'delete', url: '/api/token', withCredentials: true}, // withCredentials代表请求带cookies
   log: {method: 'get', url: '/api/log', withCredentials: true},
   postAvatar: {method: 'post', url: '/api/avatar', withCredentials: true},
   getImage: {method: 'get', url: '/api/image'},
-  forgetPassword: {method: 'delete', url: '/api/password/email/:email'}
+  forgetPassword: {method: 'delete', url: '/api/password/email/:email'},
+  changePassword: {method: 'put', url: '/api/password', withCredentials: true},
+  changeNickName: {method: 'put', url: '/api/nickName', withCredentials: true},
+  setEmail: {method: 'post', url: '/api/email', withCredentials: true}
 }
 
 /**
@@ -66,10 +69,50 @@ function forgetPassword (email) {
   return axios(options)
 }
 
+/**
+ * 修改密码
+ *
+ * @param {string} password 旧密码
+ * @param {string} newPassword 新密码
+ * @returns {Promise}
+ */
+function changePassword (password, newPassword) {
+  const data = {data: {password: password, newPassword: newPassword}}
+  const options = Object.assign({}, apiList.changePassword, data)
+  return axios(options)
+}
+/**
+ * 设置邮箱地址
+ *
+ * @param {string} password 账号密码
+ * @param {string} email 邮箱地址
+ * @returns {Promise}
+ */
+function setEmail (password, email) {
+  const data = {data: {password: password, email: email}}
+  const options = Object.assign({}, apiList.setEmail, data)
+  return axios(options)
+}
+
+/**
+ * 修改昵称
+ *
+ * @param {string} nickName 昵称
+ * @returns {Promise}
+ */
+function changeNickName (nickName) {
+  const data = {data: {nickName: nickName}}
+  const options = Object.assign({}, apiList.changeNickName, data)
+  return axios(options)
+}
+
 export default {
   register: register,
   login: login,
   logout: logout,
   log: log,
-  forgetPassword: forgetPassword
+  forgetPassword: forgetPassword,
+  changePassword: changePassword,
+  setEmail: setEmail,
+  changeNickName: changeNickName
 }

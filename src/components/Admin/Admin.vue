@@ -46,7 +46,6 @@
 
 <script>
   import Header from '@/components/Admin/Header'
-  import LogMessage from '@/components/Admin/LogMessage'
   import Menu from '@/components/Admin/Menu'
   import {group} from '@/config/config.js'
   export default {
@@ -68,7 +67,6 @@
     },
     components: {
       'avue-header': Header,
-      'avue-log-message': LogMessage,
       'avue-menu': Menu
     }
   }
