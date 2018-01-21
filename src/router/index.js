@@ -23,7 +23,7 @@ export default new Router({
       children: [
         {
           path: 'overview',
-          component: HelloWorld
+          component: HelloWorld// 正在开发中
         },
         {
           path: 'logMessage',
@@ -32,6 +32,18 @@ export default new Router({
         {
           path: 'accountSetting',
           component: AccountSetting
+        },
+        {
+          path: 'userList',
+          component: HelloWorld// 正在开发中
+        },
+        {
+          path: 'userLogList',
+          component: HelloWorld// 正在开发中
+        },
+        {
+          path: 'setMessage',
+          component: HelloWorld// 正在开发中
         }
       ]
     }
