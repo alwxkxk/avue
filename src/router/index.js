@@ -6,6 +6,7 @@ import Login from '@/components/Login'
 import Admin from '@/components/Admin/Admin'
 import LogMessage from '@/components/Admin/LogMessage'
 import AccountSetting from '@/components/Admin/AccountSetting'
+import UserList from '@/components/Admin/UserList'
 
 Vue.use(Router)
 
@@ -35,7 +36,7 @@ export default new Router({
         },
         {
           path: 'userList',
-          component: HelloWorld// 正在开发中
+          component: UserList// 正在开发中
         },
         {
           path: 'userLogList',

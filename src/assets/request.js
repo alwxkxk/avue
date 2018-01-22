@@ -6,6 +6,8 @@ const apiList = {
   log: {method: 'get', url: '/api/log', withCredentials: true},
   postAvatar: {method: 'post', url: '/api/avatar', withCredentials: true},
   getImage: {method: 'get', url: '/api/image'},
+  checkNoRepeat: {method: 'get', url: '/api/checkNoRepeat/:key/:value'},
+  getUserList: {method: 'get', url: '/api/userList'},
   forgetPassword: {method: 'delete', url: '/api/password/email/:email'},
   changePassword: {method: 'put', url: '/api/password', withCredentials: true},
   changeNickName: {method: 'put', url: '/api/nickName', withCredentials: true},
@@ -106,6 +108,31 @@ function changeNickName (nickName) {
   return axios(options)
 }
 
+/**
+ * 检查没有重复值
+ *
+ * @param {string} key 键名 name,nick_name,email等值
+ * @param {string} value 值
+ * @returns {Promise}
+ */
+function checkNoRepeat (key, value) {
+  const options = Object.assign({}, apiList.checkNoRepeat)
+  options.url = options.url.replace(/:key/, key)
+  options.url = options.url.replace(/:value/, value)
+  console.log(options.url)
+  return axios(options)
+}
+
+/**
+ * 管理员 获取用户列表
+ *
+ * @returns {Promise}
+ */
+function getUserList () {
+  const options = apiList.getUserList
+  return axios(options)
+}
+
 export default {
   register: register,
   login: login,
@@ -114,5 +141,7 @@ export default {
   forgetPassword: forgetPassword,
   changePassword: changePassword,
   setEmail: setEmail,
-  changeNickName: changeNickName
+  changeNickName: changeNickName,
+  checkNoRepeat: checkNoRepeat,
+  getUserList: getUserList
 }
