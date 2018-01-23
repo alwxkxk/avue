@@ -9,6 +9,7 @@ const apiList = {
   checkNoRepeat: {method: 'get', url: '/api/checkNoRepeat/:key/:value'},
   getUserList: {method: 'get', url: '/api/userList'},
   forgetPassword: {method: 'delete', url: '/api/password/email/:email'},
+  deleteUser: {method: 'delete', url: '/api/user/:name', withCredentials: true},
   changePassword: {method: 'put', url: '/api/password', withCredentials: true},
   changeNickName: {method: 'put', url: '/api/nickName', withCredentials: true},
   setEmail: {method: 'post', url: '/api/email', withCredentials: true}
@@ -17,8 +18,8 @@ const apiList = {
 /**
  * 用户注册
  *
- * @param {string} name 用户名
- * @param {string} password 密码
+ * @param {String} name 用户名
+ * @param {String} password 密码
  * @returns {Promise}
  */
 function register (name, password) {
@@ -30,8 +31,8 @@ function register (name, password) {
 /**
  * 用户登陆
  *
- * @param {string} name 用户名
- * @param {string} password 密码
+ * @param {String} name 用户名
+ * @param {String} password 密码
  * @returns {Promise}
  */
 function login (name, password) {
@@ -62,7 +63,7 @@ function log () {
 /**
  * 忘记密码，向邮箱发送用户名与新的随机密码
  *
- * @param {string} email 邮箱地址
+ * @param {String} email 邮箱地址
  * @returns {Promise}
  */
 function forgetPassword (email) {
@@ -72,10 +73,22 @@ function forgetPassword (email) {
 }
 
 /**
+ * 管理员删除账号
+ *
+ * @param {String} name
+ * @returns {Promise}
+ */
+function deleteUser (name) {
+  const options = Object.assign({}, apiList.deleteUser)
+  options.url = options.url.replace(/:name/, name)
+  return axios(options)
+}
+
+/**
  * 修改密码
  *
- * @param {string} password 旧密码
- * @param {string} newPassword 新密码
+ * @param {String} password 旧密码
+ * @param {String} newPassword 新密码
  * @returns {Promise}
  */
 function changePassword (password, newPassword) {
@@ -86,8 +99,8 @@ function changePassword (password, newPassword) {
 /**
  * 设置邮箱地址
  *
- * @param {string} password 账号密码
- * @param {string} email 邮箱地址
+ * @param {String} password 账号密码
+ * @param {String} email 邮箱地址
  * @returns {Promise}
  */
 function setEmail (password, email) {
@@ -99,7 +112,7 @@ function setEmail (password, email) {
 /**
  * 修改昵称
  *
- * @param {string} nickName 昵称
+ * @param {String} nickName 昵称
  * @returns {Promise}
  */
 function changeNickName (nickName) {
@@ -111,8 +124,8 @@ function changeNickName (nickName) {
 /**
  * 检查没有重复值
  *
- * @param {string} key 键名 name,nick_name,email等值
- * @param {string} value 值
+ * @param {String} key 键名 name,nick_name,email等值
+ * @param {String} value 值
  * @returns {Promise}
  */
 function checkNoRepeat (key, value) {
@@ -143,5 +156,6 @@ export default {
   setEmail: setEmail,
   changeNickName: changeNickName,
   checkNoRepeat: checkNoRepeat,
-  getUserList: getUserList
+  getUserList: getUserList,
+  deleteUser: deleteUser
 }

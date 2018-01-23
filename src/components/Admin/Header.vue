@@ -70,19 +70,17 @@ export default {
       if (command === 'logout') {
         request.logout()
         .then((res) => {
-          if (res.status !== 200) {
-            this.$message.error('网络或服务器问题：' + res.status)
-            return
-          }
           if (res.data.error_code === 0) {
             this.$message('成功退出')
             this.$router.replace({path: '/'})
           } else {
             this.$message(res.data.message)
+            this.$router.replace({path: '/'})
           }
         })
         .catch((err) => {
           this.$message.error('网络或服务器问题')
+          this.$router.replace({path: '/'})
           console.log(err)
         })
       } else if (command === 'accountSetting') {
