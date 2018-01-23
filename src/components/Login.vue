@@ -3,7 +3,7 @@
     <el-col :span="7" class="login-container">
       <div class="login-title">系统后台</div>
       <el-form id="login-form" :model="loginForm">
-        <el-form-item label="用户" class="login-form-item">
+        <el-form-item label="用户" class="login-form-item" >
           <el-col :span="20">
             <el-input v-model="loginForm.name"></el-input>
           </el-col>
@@ -22,14 +22,14 @@
     </el-col>
     <!-- 用户注册对话弹窗 start-->
     <el-dialog title="账号注册" :visible="registerFormVisible" @close="registerFormVisible=false" width="30%">
-      <el-form :model="registerForm" label-width="80px">
-        <el-form-item label="账号">
-          <el-input v-model="registerForm.name" auto-complete="off"></el-input>
+      <el-form :model="registerForm" label-width="80px" :rules="rules" status-icon>
+        <el-form-item label="账号" prop="name">
+          <el-input v-model="registerForm.name" auto-complete="off" ></el-input>
         </el-form-item>
-        <el-form-item label="密码">
+        <el-form-item label="密码" prop="password">
           <el-input  type="password" v-model="registerForm.password" auto-complete="off"></el-input>
         </el-form-item>
-        <el-form-item label="重输密码">
+        <el-form-item label="重输密码" prop="passwordAgain">
           <el-input  type="password" v-model="registerForm.passwordAgain" auto-complete="off"></el-input>
         </el-form-item>
       </el-form>
@@ -49,6 +49,22 @@
   import request from '@/assets/request.js'
   export default {
     data () {
+      const checkNameNoRepeat = (rule, value, callback) => {
+        request.checkNoRepeat('name', value)
+        .then(res => {
+          if (res.data.error_code === 0) {
+            callback()
+          } else {
+            callback(res.data.message)
+          }
+        })
+        .catch(err => { callback(err) })
+      }
+      const vaildatePasswordAgain = (rule, value, callback) => {
+        if (value !== this.registerForm.password) {
+          callback(new Error('两次密码不相同'))
+        } else { callback() }
+      }
       return {
         loginForm: {
           name: '',
@@ -59,6 +75,20 @@
           name: '',
           password: '',
           passwordAgain: ''
+        },
+        rules: {
+          name: [
+            { required: true, message: '请输入用户名', trigger: 'blur' },
+            { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' },
+            { validator: checkNameNoRepeat, message: '用户名已被使用', trigger: 'blur'}
+          ],
+          password: [
+            { required: true, message: '请输入密码', trigger: 'blur' },
+            { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
+          ],
+          passwordAgain: [
+          { required: true, message: '请再次输入密码', trigger: 'change' },
+          { validator: vaildatePasswordAgain, trigger: 'blur'}]
         }
       }
     },
