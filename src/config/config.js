@@ -1,5 +1,5 @@
 module.exports = {
-  server: 'http://localhost:7999',
+  socketioPath: 'http://www.scaugreen.cn:7999', // akoa的端口，socketio连接所用
   url: {
     postAvatar: '/api/avatar',
     getImage: '/api/image'

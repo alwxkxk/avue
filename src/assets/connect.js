@@ -1,7 +1,7 @@
 import io from 'socket.io-client'
 import config from '@/config/config.js'
 
-const socket = io(config.server)
+const socket = io(config.socketioPath)
 socket.on('connect', function () {
   console.log('socket.io connect')
 })
