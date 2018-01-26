@@ -1,6 +1,6 @@
 <template>
-  <el-row class="margin-top-2em">
-    <el-col :span="6" class="status-box">
+  <el-row >
+    <el-col :span="6" :offset="1" class="status-box">
       <div>
         <el-progress type="circle" :percentage="mem.percentage" :stroke-width="14"></el-progress>
       </div>
@@ -9,15 +9,15 @@
         <p>总内存：{{mem.totol}} MB</p>
       </div>
     </el-col>
-    <el-col :span="6" class="status-box">
+    <el-col :span="6" :offset="1" class="status-box">
       <div>
         <el-progress type="circle" :percentage="currentLoad" :stroke-width="14"></el-progress>
       </div>
       <div>
-          <p>CPU平均负载 %</p>
+          <p>CPU平均负载</p>
       </div>
     </el-col>
-    <el-col :span="6" class="status-box" v-for="item in fs" :key="item.fs">
+    <el-col :span="6" :offset="1" class="status-box" v-for="item in fs" :key="item.fs">
       <div>
         <el-progress type="circle" :percentage="item.use" :stroke-width="14"></el-progress>
       </div>
@@ -73,8 +73,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
-  .margin-top-2em{
+    height: 15em;
+    background-color: white;
+    padding: 1em;
     margin-top: 2em;
   }
 </style>
