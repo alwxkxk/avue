@@ -101,7 +101,7 @@
           if (res.data.error_code === 0) {
             this.$message.success('登陆成功')
             window.localStorage.setItem('user', JSON.stringify(res.data.data))// 将用户信息保存到本地
-            this.$router.push({ path: '/admin' }) // 编程式导航至控制页面
+            this.$router.push({ path: '/admin/overview' }) // 编程式导航至控制页面
           } else {
             this.$message.error(res.data.message)
           }

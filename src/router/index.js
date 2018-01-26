@@ -7,7 +7,7 @@ import Admin from '@/components/Admin/Admin'
 import LogMessage from '@/components/Admin/LogMessage'
 import AccountSetting from '@/components/Admin/AccountSetting'
 import UserList from '@/components/Admin/UserList'
-
+import Overview from '@/components/Admin/Overview'
 Vue.use(Router)
 
 export default new Router({
@@ -24,7 +24,7 @@ export default new Router({
       children: [
         {
           path: 'overview',
-          component: HelloWorld// 正在开发中
+          component: Overview// 正在开发中
         },
         {
           path: 'logMessage',
