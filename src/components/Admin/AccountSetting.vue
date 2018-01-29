@@ -9,49 +9,30 @@
             <el-button size="small">上传图片</el-button>
           </el-upload>
         </div>
-        <!-- 昵称栏 -->
-        <el-col :span="16" :offset="1">
-          <el-input v-model="user.nickName">
-            <i class="el-icon-edit el-input__icon" slot="suffix" @click="changeNickName"></i>
-          </el-input>
-        </el-col>
 
       </el-col>
-      <el-col :span="18" class="p10px">
-        <el-col :span="2">用户名：</el-col>
-        <el-col :span="8">
-          <el-input disabled v-model="user.name"></el-input>
-        </el-col>
-        <el-col :span="4" :offset="1">
-          <el-button round @click="changePasswordFormVisible=true">修改密码</el-button>
-        </el-col>
+      <el-col :span="12" class="p10px">
+        <el-form :model="user" label-width="80px" :rules="rules" status-icon>
+          <el-form-item label="账号名">
+            <el-input v-model="user.name" disabled class="w70"></el-input>
+            <el-button @click="changePasswordFormVisible=true">修改密码</el-button>
+          </el-form-item>
+          <el-form-item label="昵称" prop="nickName">
+            <el-input v-model="user.nickName" auto-complete="off" class="w70"></el-input>
+            <el-button @click="changeNickName">修改昵称</el-button>
+          </el-form-item>
+          <el-form-item label="邮箱" prop="email">
+            <el-input v-model="user.email" class="w70"></el-input>
+            <el-button @click="setEmail">修改邮箱</el-button>
+          </el-form-item>
+          <el-form-item>
+            <el-button round disabled>绑定 QQ</el-button>
+            <el-button round disabled>绑定微信</el-button>
+          </el-form-item>
+        </el-form>
       </el-col>
-      <el-col :span="18" class="p10px">
-        <el-col :span="2">邮箱：</el-col>
-        <el-col :span="8">
-          <el-input v-model="user.email"></el-input>
-        </el-col>
-        <el-col :span="4" :offset="1">
-          <el-button round @click="setEmail">验证邮箱</el-button>
-        </el-col>
-      </el-col>
-      <el-col :span="18" class="p10px">
-        <el-col :span="2">手机：</el-col>
-        <el-col :span="8">
-          <el-input v-model="user.phone"></el-input>
-        </el-col>
-        <el-col :span="4" :offset="1">
-          <el-button round disabled>验证手机</el-button>
-        </el-col>
-      </el-col>
-      <el-col :span="18">
-        <el-col :span="4">
-          <el-button round disabled>绑定QQ</el-button>
-        </el-col>
-        <el-col :span="4">
-          <el-button round disabled>绑定微信</el-button>
-        </el-col>
-      </el-col>
+
+
     </el-row>
     <!-- 修改密码对话窗 start -->
     <el-dialog title="修改密码" :visible="changePasswordFormVisible" @close="changePasswordFormVisible=false" width="30%">
@@ -101,6 +82,10 @@
     line-height: 40px;
     margin: 10px 2px;
   }
+
+  .w70 {
+    width: 70%;
+  }
 </style>
 
 <script>
@@ -111,6 +96,28 @@
   export default {
     name: 'AccountSetting',
     data () {
+      const checkNickNameNoRepeat = (rule, value, callback) => {
+        request.checkNoRepeat('nick_name', value)
+          .then(res => {
+            if (res.data.error_code === 0) {
+              callback()
+            } else {
+              callback(res.data.message)
+            }
+          })
+          .catch(err => { callback(err) })
+      }
+      const checkEmailNoRepeat = (rule, value, callback) => {
+        request.checkNoRepeat('email', value)
+          .then(res => {
+            if (res.data.error_code === 0) {
+              callback()
+            } else {
+              callback(res.data.message)
+            }
+          })
+          .catch(err => { callback(err) })
+      }
       return {
         avatarUrl: '',
         user: {
@@ -126,6 +133,16 @@
           password: '',
           newPassword: '',
           newPasswordAgain: ''
+        },
+        rules: {
+          nickName: [
+            { validator: checkNickNameNoRepeat, message: '此昵称已被使用', trigger: 'blur' },
+            { validator: checkNickNameNoRepeat, message: '此昵称已被使用', trigger: 'change' }
+          ],
+          email: [
+            { validator: checkEmailNoRepeat, message: '此邮箱已被使用', trigger: 'blur' },
+            { validator: checkEmailNoRepeat, message: '此邮箱已被使用', trigger: 'change' }
+          ]
         }
       }
     },
@@ -154,29 +171,51 @@
           return this.$message.error('两次密码不一致')
         }
         request.changePassword(password, newPassword)
-        .then(res => {
-          if (res.data.error_code === 0) {
-            this.$message.success('修改密码成功，请重新登陆。')
-            this.registerFormVisible = false
-            this.$router.replace('/')
-          } else {
-            this.$message.error(res.data.message)
-          }
-        })
-        .catch(err => {
-          this.$message.error('网络或服务器问题')
-          console.log(err)
-        })
+          .then(res => {
+            if (res.data.error_code === 0) {
+              this.$message.success('修改密码成功，请重新登陆。')
+              this.registerFormVisible = false
+              this.$router.replace('/')
+            } else {
+              this.$message.error(res.data.message)
+            }
+          })
+          .catch(err => {
+            this.$message.error('网络或服务器问题')
+            console.log(err)
+          })
       },
       setEmail () {
         this.$prompt('请输入账号密码', '提示', {
           confirmButtonText: '确定',
-          cancelButtonText: '取消'})
-        .then(({ value }) => {
-          request.setEmail(value, this.user.email)
+          cancelButtonText: '取消'
+        })
+          .then(({ value }) => {
+            request.setEmail(value, this.user.email)
+              .then(res => {
+                if (res.data.error_code === 0) {
+                  this.$message.success('已发送验证邮件')
+                } else {
+                  this.$message.error(res.data.message)
+                }
+              })
+              .catch(err => {
+                this.$message.error(err)
+                console.log(err)
+              })
+          })
+          .catch(err => {
+            console.log(err)
+            this.$message.info('取消输入')
+          })
+      },
+      changeNickName () {
+        console.log(this.user.nickName)
+        request.changeNickName(this.user.nickName)
           .then(res => {
             if (res.data.error_code === 0) {
-              this.$message.success('已发送验证邮件')
+              this.$message.success('成功修改昵称')
+              bus.$emit('chageUserInfo', 'nick_name', this.user.nickName)
             } else {
               this.$message.error(res.data.message)
             }
@@ -184,26 +223,6 @@
           .catch(err => {
             this.$message.error(err)
           })
-        })
-        .catch(err => {
-          console.log(err)
-          this.$message.info('取消输入')
-        })
-      },
-      changeNickName () {
-        console.log(this.user.nickName)
-        request.changeNickName(this.user.nickName)
-        .then(res => {
-          if (res.data.error_code === 0) {
-            this.$message.success('成功修改昵称')
-            bus.$emit('chageUserInfo', 'nick_name', this.user.nickName)
-          } else {
-            this.$message.error(res.data.message)
-          }
-        })
-        .catch(err => {
-          this.$message.error(err)
-        })
       }
     }
   }
