@@ -8,38 +8,33 @@
       <el-col :span="7">
         <el-upload class="upload-button" action="api/file" :show-file-list="false" :on-success="handleUploadSuccess">
           <el-button size="small" type="primary">点击上传</el-button>
-          <div slot="tip" class="el-upload__tip">文件限制大小：不超过200MB</div>
+          <div slot="tip">文件限制大小：不超过200MB</div>
         </el-upload>
       </el-col>
     </el-row>
-    <el-table class="file-list-table h80" :data="fileList" border height="80%">
-      <el-table-column align="center" prop="file_name" label="文件名">
-      </el-table-column>
-      <el-table-column align="center" prop="size" label="文件大小/KB">
-      </el-table-column>
-      <el-table-column align="center" prop="create_time" label="上传时间">
-      </el-table-column>
-      <el-table-column fixed="right" label="操作">
-        <template slot-scope="scope">
-          <el-button @click="handleDelete(scope.row,scope.$index)" size="small" type="danger">删除</el-button>
-          <el-button @click="handledownload(scope.row,scope.$index)" size="small" type="primary">下载</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-
+    <el-row class="file-row h80">
+      <el-col :span="4" v-for="(item, index) in fileList" :key="item.file_name" class="file-col">
+        <div class="file">
+          <img :src="fileImagePath" class="file-image" @click="handledownload(item)">
+          <i class="el-icon-delete file-delete-icon" @click="handleDelete(item,index)"></i>
+          <p>{{item.file_name}}</p>
+        </div>
+      </el-col>
+    </el-row>
   </div>
-
 </template>
 
 
 
 <script>
+  import fileImagePath from '@/assets/file.png'
   import request from '@/assets/request.js'
-  import {url} from '@/config/config.js'
+  import { url } from '@/config/config.js'
   export default {
     name: 'File',
     data () {
       return {
+        fileImagePath: fileImagePath,
         fileTotalNumber: 0,
         fileTotalSize: 0,
         fileList: []
@@ -62,9 +57,9 @@
           this.$message.error('上传文件失败')
         }
       },
-      handleDelete (row, index) {
-        // console.log(row)
-        request.deleteFile(row.uuid)
+      handleDelete (file, index) {
+        // console.log('handleDelete', file, index)
+        request.deleteFile(file.uuid)
           .then(res => {
             if (res.data.error_code === 0) {
               this.$message.success('成功删除文件')
@@ -75,9 +70,10 @@
           })
           .catch(err => { this.$message.error(err) })
       },
-      handledownload (row, index) {
+      handledownload (file) {
         // 打开新窗口下载文件
-        window.open(url.downloadFile.replace(/:uuid/, row.uuid))
+        // console.log('handledownload', file)
+        window.open(url.downloadFile.replace(/:uuid/, file.uuid))
       }
     },
     created () {
@@ -98,5 +94,30 @@
 <style scoped>
   .upload-button {
     margin: 1em;
+  }
+
+  .file-row {
+    background-color: white;
+  }
+
+  .file-col :hover .file-delete-icon {
+    display: inline-block;
+
+  }
+
+  .file-col :hover {
+    cursor: pointer;
+  }
+
+  .file {
+    text-align: center;
+  }
+
+  .file-delete-icon {
+    display: none;
+  }
+
+  .file-image {
+    width: 4em;
   }
 </style>
