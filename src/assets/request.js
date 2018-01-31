@@ -4,12 +4,14 @@ const apiList = {
   login: {method: 'post', url: '/api/token'},
   logout: {method: 'delete', url: '/api/token', withCredentials: true}, // withCredentials代表请求带cookies
   log: {method: 'get', url: '/api/log', withCredentials: true},
+  fileList: {method: 'get', url: '/api/fileList', withCredentials: true},
   postAvatar: {method: 'post', url: '/api/avatar', withCredentials: true},
   getImage: {method: 'get', url: '/api/image'},
   checkNoRepeat: {method: 'get', url: '/api/checkNoRepeat/:key/:value'},
   getUserList: {method: 'get', url: '/api/userList'},
   forgetPassword: {method: 'delete', url: '/api/password/email/:email'},
   deleteUser: {method: 'delete', url: '/api/user/:name', withCredentials: true},
+  deleteFile: {method: 'delete', url: '/api/file/:uuid', withCredentials: true},
   changePassword: {method: 'put', url: '/api/password', withCredentials: true},
   changeNickName: {method: 'put', url: '/api/nickName', withCredentials: true},
   setEmail: {method: 'post', url: '/api/email', withCredentials: true}
@@ -61,6 +63,16 @@ function log () {
 }
 
 /**
+ * GET 用户文件列表
+ *
+ * @returns {Promise}
+ */
+function fileList () {
+  const options = apiList.fileList
+  return axios(options)
+}
+
+/**
  * 忘记密码，向邮箱发送用户名与新的随机密码
  *
  * @param {String} email 邮箱地址
@@ -81,6 +93,18 @@ function forgetPassword (email) {
 function deleteUser (name) {
   const options = Object.assign({}, apiList.deleteUser)
   options.url = options.url.replace(/:name/, name)
+  return axios(options)
+}
+
+/**
+ * 用户删除文件
+ *
+ * @param {String} uuid
+ * @returns {Promise}
+ */
+function deleteFile (uuid) {
+  const options = Object.assign({}, apiList.deleteFile)
+  options.url = options.url.replace(/:uuid/, uuid)
   return axios(options)
 }
 
@@ -151,11 +175,13 @@ export default {
   login: login,
   logout: logout,
   log: log,
+  fileList: fileList,
   forgetPassword: forgetPassword,
   changePassword: changePassword,
   setEmail: setEmail,
   changeNickName: changeNickName,
   checkNoRepeat: checkNoRepeat,
   getUserList: getUserList,
-  deleteUser: deleteUser
+  deleteUser: deleteUser,
+  deleteFile: deleteFile
 }

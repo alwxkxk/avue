@@ -3,7 +3,8 @@ module.exports = {
   // socketioPath: '127.0.0.1:7999', // 本地发开时所用，akoa已经本地运行
   url: {
     postAvatar: '/api/avatar',
-    getImage: '/api/image'
+    getImage: '/api/image',
+    downloadFile: '/api/file/:uuid'
   },
   group: {
     '0': 'user',

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
   <html>
     <head>
-      <title>界面功能规划</title>
+      <title>界面开发笔记</title>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       
@@ -239,6 +239,16 @@ Note over 浏览器:刷新视图
 Note over 浏览器:离开纵览页面
 浏览器->服务器:socketio离开systemStatus房间
 </div>
+<h3 class="mume-header" id="%E6%96%87%E4%BB%B6">文件</h3>
+
+<h4 class="mume-header" id="%E4%B8%8A%E4%BC%A0">上传</h4>
+
+<p>文件上传后会生成uuid名保存在服务器中，并把相关信息保存到数据库。</p>
+<h4 class="mume-header" id="%E4%B8%8B%E8%BD%BD">下载</h4>
+
+<p>文件下载需要打开新窗口来进行下载。</p>
+<pre class="language-javascript">window<span class="token punctuation">.</span><span class="token function">open</span><span class="token punctuation">(</span>url<span class="token punctuation">.</span>downloadFile<span class="token punctuation">.</span><span class="token function">replace</span><span class="token punctuation">(</span><span class="token regex">/:uuid/</span><span class="token punctuation">,</span> row<span class="token punctuation">.</span>uuid<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre>
 <h3 class="mume-header" id="%E5%AE%89%E5%85%A8">安全</h3>
 
 <p>账号密码全部都会以md5(avue+password)进行处理，再向服务器发出请求。（暂时为方便开发，延后再做）</p>
@@ -252,6 +262,12 @@ Note over 浏览器:离开纵览页面
 <ul>
 <li><a href="#%E5%8F%AF%E5%8C%B9%E9%85%8D%E8%8F%9C%E5%8D%95%E6%A0%8F">可匹配菜单栏</a></li>
 <li><a href="#%E7%BA%B5%E8%A7%88">纵览</a></li>
+<li><a href="#%E6%96%87%E4%BB%B6">文件</a>
+<ul>
+<li><a href="#%E4%B8%8A%E4%BC%A0">上传</a></li>
+<li><a href="#%E4%B8%8B%E8%BD%BD">下载</a></li>
+</ul>
+</li>
 <li><a href="#%E5%AE%89%E5%85%A8">安全</a></li>
 </ul>
 </li>
