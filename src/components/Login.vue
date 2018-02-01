@@ -164,7 +164,7 @@
       this.$notify({
         title: '账号密码',
         message: '管理员账号密码皆为akoa,亦可自行注册普通用户账号',
-        duration: 0
+        duration: 10000
       })
     }
   }
