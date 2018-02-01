@@ -18,6 +18,7 @@
           <img :src="fileImagePath" class="file-image" @click="handledownload(item)">
           <i class="el-icon-delete file-delete-icon" @click="handleDelete(item,index)"></i>
           <p>{{item.file_name}}</p>
+          <p v-if="administrator">{{item.owner}} - {{item.size}}KB</p>
         </div>
       </el-col>
     </el-row>
@@ -30,6 +31,7 @@
   import fileImagePath from '@/assets/file.png'
   import request from '@/assets/request.js'
   import { url } from '@/config/config.js'
+  import {group} from '@/config/config.js'
   export default {
     name: 'File',
     data () {
@@ -37,7 +39,8 @@
         fileImagePath: fileImagePath,
         fileTotalNumber: 0,
         fileTotalSize: 0,
-        fileList: []
+        fileList: [],
+        administrator: false
       }
     },
     watch: {
@@ -77,6 +80,10 @@
       }
     },
     created () {
+      const user = JSON.parse(window.localStorage.getItem('user')) || {}
+      let groupId = user['group_id']
+      if (group[groupId] === 'administrator') this.administrator = true
+      else this.administrator = false
       request.fileList()
         .then(res => {
           console.log(res)
