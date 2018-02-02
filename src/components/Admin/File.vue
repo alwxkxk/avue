@@ -31,7 +31,8 @@
   import fileImagePath from '@/assets/file.png'
   import request from '@/assets/request.js'
   import { url } from '@/config/config.js'
-  import {group} from '@/config/config.js'
+  import common from '@/assets/common.js'
+  // import {group} from '@/config/config.js'
   export default {
     name: 'File',
     data () {
@@ -80,10 +81,11 @@
       }
     },
     created () {
-      const user = JSON.parse(window.localStorage.getItem('user')) || {}
-      let groupId = user['group_id']
-      if (group[groupId] === 'administrator') this.administrator = true
-      else this.administrator = false
+      // const user = JSON.parse(window.localStorage.getItem('user')) || {}
+      // let groupId = user['group_id']
+      // if (group[groupId] === 'administrator') this.administrator = true
+      // else this.administrator = false
+      this.administrator = common.isAdministrator()
       request.fileList()
         .then(res => {
           console.log(res)

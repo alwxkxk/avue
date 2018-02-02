@@ -33,6 +33,7 @@
 </style>
 <script>
   import request from '@/assets/request.js'
+  import common from '@/assets/common.js'
   export default {
     name: 'UserList',
     data () {
@@ -57,8 +58,13 @@
     created () {
       request.getUserList()
         .then(res => {
-          console.log(res)
           this.userList = res.data.data
+          this.userList.forEach(user => {
+            // 手动转换为当地时间
+            user.create_time = common.convertLocalTime(user.create_time)
+            user.last_time = common.convertLocalTime(user.last_time)
+          })
+          console.log(this.userList)
         })
         .catch(err => {
           console.log(err)
