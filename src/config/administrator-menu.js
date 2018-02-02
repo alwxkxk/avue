@@ -4,7 +4,7 @@ module.exports = {
     '用户列表': '/admin/userList',
     '用户日志列表': '/admin/userLogList'
   },
-  '文件': '/admin/file',
+  '云盘文件管理': '/admin/file',
   '消息管理': {
     '系统消息设置': '/admin/setMessage'
   },
