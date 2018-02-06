@@ -5,6 +5,8 @@ const apiList = {
   logout: {method: 'delete', url: '/api/token', withCredentials: true}, // withCredentials代表请求带cookies
   log: {method: 'get', url: '/api/log', withCredentials: true},
   fileList: {method: 'get', url: '/api/fileList', withCredentials: true},
+  findUser: {method: 'get', url: '/api/user/:name', withCredentials: true},
+  addUser: {method: 'post', url: '/api/user/:name', withCredentials: true},
   postAvatar: {method: 'post', url: '/api/avatar', withCredentials: true},
   getImage: {method: 'get', url: '/api/image'},
   checkNoRepeat: {method: 'get', url: '/api/checkNoRepeat/:key/:value'},
@@ -156,7 +158,7 @@ function checkNoRepeat (key, value) {
   const options = Object.assign({}, apiList.checkNoRepeat)
   options.url = options.url.replace(/:key/, key)
   options.url = options.url.replace(/:value/, value)
-  console.log(options.url)
+  // console.log(options.url)
   return axios(options)
 }
 
@@ -167,6 +169,28 @@ function checkNoRepeat (key, value) {
  */
 function getUserList () {
   const options = apiList.getUserList
+  return axios(options)
+}
+
+/**
+ * 管理员 获取用户详细信息
+ *
+ * @returns {Promise}
+ */
+function findUser (name) {
+  const options = Object.assign({}, apiList.findUser)
+  options.url = options.url.replace(/:name/, name)
+  return axios(options)
+}
+
+/**
+ * 管理员 添加用户
+ *
+ * @returns {Promise}
+ */
+function addUser (name) {
+  const options = Object.assign({}, apiList.addUser)
+  options.url = options.url.replace(/:name/, name)
   return axios(options)
 }
 
@@ -183,5 +207,7 @@ export default {
   checkNoRepeat: checkNoRepeat,
   getUserList: getUserList,
   deleteUser: deleteUser,
-  deleteFile: deleteFile
+  deleteFile: deleteFile,
+  findUser: findUser,
+  addUser: addUser
 }

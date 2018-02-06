@@ -1,8 +1,15 @@
 <template>
   <div class="h100">
-    <el-button disabled>批量上传账号</el-button>
-    <el-button disabled>手动添加账号</el-button>
-    <el-table class="log-message-table" :data="userList" border height="100%">
+    <el-row>
+      <el-col :span="5">
+          <el-input v-model="input" placeholder="搜索或添加账号"></el-input>
+      </el-col>
+      <el-col :span="6" :offset="1">
+          <el-button @click="addUser">添加用户</el-button>
+      </el-col>
+    </el-row>
+    
+    <el-table class="log-message-table" :data="userListTable" border height="100%"  >
       <el-table-column align="center" prop="name" label="账号名" width="180">
       </el-table-column>
       <el-table-column align="center" prop="nick_name" label="昵称">
@@ -38,7 +45,9 @@
     name: 'UserList',
     data () {
       return {
-        userList: []
+        input: '',
+        userList: [],
+        userListTable: []
       }
     },
     methods: {
@@ -53,6 +62,27 @@
             this.$message.error(res.data.data)
           }
         })
+      },
+      addUser () {
+        let name = this.input
+        request.addUser(name)
+        .then(res => {
+          if (res.data.error_code === 0) {
+            this.$message.info(`新增用户${name}，初始密码与账号相同`)
+            this.userList.push(res.data.data)
+          } else {
+            this.$message.error(res.data.data)
+          }
+        })
+      }
+    },
+    watch: {
+      input: function () {
+        if (this.input.length !== 0) {
+          this.userListTable = this.userList.filter(user => user.name.includes(this.input))
+        } else {
+          this.userListTable = this.userList
+        }
       }
     },
     created () {
@@ -65,6 +95,7 @@
             user.last_time = common.convertLocalTime(user.last_time)
           })
           console.log(this.userList)
+          this.userListTable = this.userList
         })
         .catch(err => {
           console.log(err)
