@@ -47,6 +47,7 @@
 
 <script>
   import request from '@/assets/request.js'
+  import config from '@/config/config.js'
   export default {
     data () {
       const checkNameNoRepeat = (rule, value, callback) => {

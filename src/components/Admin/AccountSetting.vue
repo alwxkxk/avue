@@ -5,7 +5,7 @@
         <div class="avatar">
           <img :src="avatarUrl">
           </img>
-          <el-upload class="uploadButton" :action="action" :show-file-list="false" :on-success="handleAvatarSuccess">
+          <el-upload class="uploadButton" :action="action" :headers="headerToken" :show-file-list="false" :on-success="handleAvatarSuccess">
             <el-button size="small">上传图片</el-button>
           </el-upload>
         </div>
@@ -90,9 +90,9 @@
 
 <script>
   import logo from '@/assets/logo.png'
-  import { url } from '@/config/config.js'
   import bus from '@/assets/bus.js'
   import request from '@/assets/request.js'
+  import config from '@/config/config.js'
   export default {
     name: 'AccountSetting',
     data () {
@@ -127,7 +127,8 @@
           nickName: '',
           avatar: ''
         },
-        action: url.postAvatar,
+        action: config.baseURL + config.url.postAvatar,
+        headerToken: config.headerToken ? {token: request.getTokenFromLocal()} : {},
         changePasswordFormVisible: false,
         changePasswordForm: {
           password: '',
@@ -153,12 +154,12 @@
       this.user.email = user.email
       this.user.phone = user.phone
       this.user.nickName = user.nick_name
-      this.avatarUrl = user.avatar ? url.getImage + '/' + user.avatar : logo
+      this.avatarUrl = user.avatar ? `${config.baseURL}${config.url.getImage}/${user.avatar}` : logo
     },
     methods: {
       handleAvatarSuccess (response, file) {
         console.log(response, file)
-        this.avatarUrl = url.getImage + '/' + response.data.imageName
+        this.avatarUrl = `${config.baseURL}${config.url.getImage}/${response.data.imageName}`
         bus.$emit('changeAvatar', this.avatarUrl)
         bus.$emit('chageUserInfo', 'avatar', response.data.imageName)
       },

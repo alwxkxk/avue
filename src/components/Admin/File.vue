@@ -6,7 +6,7 @@
         <p>已使用空间大小：{{fileTotalSize}} KB</p>
       </el-col>
       <el-col :span="7">
-        <el-upload class="upload-button" action="api/file" :show-file-list="false" :on-success="handleUploadSuccess">
+        <el-upload class="upload-button" :action="action" :show-file-list="false" :on-success="handleUploadSuccess" :headers="headerToken">
           <el-button size="small" type="primary">点击上传</el-button>
           <div slot="tip">文件限制大小：不超过200MB</div>
         </el-upload>
@@ -30,7 +30,7 @@
 <script>
   import fileImagePath from '@/assets/file.png'
   import request from '@/assets/request.js'
-  import { url } from '@/config/config.js'
+  import config from '@/config/config.js'
   import common from '@/assets/common.js'
   // import {group} from '@/config/config.js'
   export default {
@@ -41,7 +41,9 @@
         fileTotalNumber: 0,
         fileTotalSize: 0,
         fileList: [],
-        administrator: false
+        administrator: false,
+        action: config.baseURL + config.url.uploadFile,
+        headerToken: config.headerToken ? {token: request.getTokenFromLocal()} : {}
       }
     },
     watch: {
@@ -76,15 +78,19 @@
       },
       handledownload (file) {
         // 打开新窗口下载文件
-        // console.log('handledownload', file)
-        window.open(url.downloadFile.replace(/:uuid/, file.uuid))
+        let url = ''
+        if (config.headerToken) {
+          // 无法设置header，只能通过url参数来传入
+          url = config.url.downloadFile2.replace(/:uuid/, file.uuid)
+          url = url.replace(/:token/, request.getTokenFromLocal())
+        } else {
+          // 已经存在cookie
+          url = config.url.downloadFile.replace(/:uuid/, file.uuid)
+        }
+        window.open(config.baseURL + url)
       }
     },
     created () {
-      // const user = JSON.parse(window.localStorage.getItem('user')) || {}
-      // let groupId = user['group_id']
-      // if (group[groupId] === 'administrator') this.administrator = true
-      // else this.administrator = false
       this.administrator = common.isAdministrator()
       request.fileList()
         .then(res => {

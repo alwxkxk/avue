@@ -1,4 +1,5 @@
 import axios from 'axios'
+import config from '@/config/config.js'
 const apiList = {
   register: {method: 'post', url: '/api/user'},
   login: {method: 'post', url: '/api/token'},
@@ -19,6 +20,23 @@ const apiList = {
   setEmail: {method: 'post', url: '/api/email', withCredentials: true}
 }
 
+function setAll (options) {
+  // 设置baseURL
+  if (config.baseURL) options.baseURL = config.baseURL
+  // 开启 header里设置token
+  if (config.headerToken) {
+    let token = getTokenFromLocal()
+    if (token) options.headers = {'token': token }
+  }
+}
+
+function getTokenFromLocal () {
+  return window.localStorage.getItem('token')
+}
+
+function setTokenToLocal (token) {
+  window.localStorage.setItem('token', token)
+}
 /**
  * 用户注册
  *
@@ -29,6 +47,7 @@ const apiList = {
 function register (name, password) {
   const data = {data: {name: name, password: password}}
   const options = Object.assign({}, apiList.register, data)
+  setAll(options)
   return axios(options)
 }
 
@@ -42,7 +61,14 @@ function register (name, password) {
 function login (name, password) {
   const data = {data: {name: name, password: password}}
   const options = Object.assign({}, apiList.login, data)
+  setAll(options)
   return axios(options)
+  .then(res => {
+    // 如果要将token设置在header，则需在登陆时将token保存本地
+    if (config.headerToken) setTokenToLocal(res.data.data.token)
+
+    return Promise.resolve(res)
+  })
 }
 /**
  * 退出登陆
@@ -51,6 +77,7 @@ function login (name, password) {
  */
 function logout () {
   const options = apiList.logout
+  setAll(options)
   return axios(options)
 }
 
@@ -61,6 +88,7 @@ function logout () {
  */
 function log () {
   const options = apiList.log
+  setAll(options)
   return axios(options)
 }
 
@@ -71,6 +99,7 @@ function log () {
  */
 function fileList () {
   const options = apiList.fileList
+  setAll(options)
   return axios(options)
 }
 
@@ -83,6 +112,7 @@ function fileList () {
 function forgetPassword (email) {
   const options = Object.assign({}, apiList.forgetPassword)
   options.url = options.url.replace(/:email/, email)
+  setAll(options)
   return axios(options)
 }
 
@@ -95,6 +125,7 @@ function forgetPassword (email) {
 function deleteUser (name) {
   const options = Object.assign({}, apiList.deleteUser)
   options.url = options.url.replace(/:name/, name)
+  setAll(options)
   return axios(options)
 }
 
@@ -107,6 +138,7 @@ function deleteUser (name) {
 function deleteFile (uuid) {
   const options = Object.assign({}, apiList.deleteFile)
   options.url = options.url.replace(/:uuid/, uuid)
+  setAll(options)
   return axios(options)
 }
 
@@ -120,6 +152,7 @@ function deleteFile (uuid) {
 function changePassword (password, newPassword) {
   const data = {data: {password: password, newPassword: newPassword}}
   const options = Object.assign({}, apiList.changePassword, data)
+  setAll(options)
   return axios(options)
 }
 /**
@@ -132,6 +165,7 @@ function changePassword (password, newPassword) {
 function setEmail (password, email) {
   const data = {data: {password: password, email: email}}
   const options = Object.assign({}, apiList.setEmail, data)
+  setAll(options)
   return axios(options)
 }
 
@@ -144,6 +178,7 @@ function setEmail (password, email) {
 function changeNickName (nickName) {
   const data = {data: {nickName: nickName}}
   const options = Object.assign({}, apiList.changeNickName, data)
+  setAll(options)
   return axios(options)
 }
 
@@ -158,6 +193,7 @@ function checkNoRepeat (key, value) {
   const options = Object.assign({}, apiList.checkNoRepeat)
   options.url = options.url.replace(/:key/, key)
   options.url = options.url.replace(/:value/, value)
+  setAll(options)
   // console.log(options.url)
   return axios(options)
 }
@@ -169,6 +205,7 @@ function checkNoRepeat (key, value) {
  */
 function getUserList () {
   const options = apiList.getUserList
+  setAll(options)
   return axios(options)
 }
 
@@ -180,6 +217,7 @@ function getUserList () {
 function findUser (name) {
   const options = Object.assign({}, apiList.findUser)
   options.url = options.url.replace(/:name/, name)
+  setAll(options)
   return axios(options)
 }
 
@@ -191,6 +229,7 @@ function findUser (name) {
 function addUser (name) {
   const options = Object.assign({}, apiList.addUser)
   options.url = options.url.replace(/:name/, name)
+  setAll(options)
   return axios(options)
 }
 
@@ -209,5 +248,6 @@ export default {
   deleteUser: deleteUser,
   deleteFile: deleteFile,
   findUser: findUser,
-  addUser: addUser
+  addUser: addUser,
+  getTokenFromLocal: getTokenFromLocal
 }

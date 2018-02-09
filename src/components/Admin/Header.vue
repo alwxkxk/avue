@@ -45,8 +45,8 @@
 <script>
 import logo from '@/assets/logo.png'
 import request from '@/assets/request.js'
-import { url } from '@/config/config.js'
 import bus from '@/assets/bus.js'
+import config from '@/config/config.js'
 export default {
   name: 'Header',
   data () {
@@ -58,10 +58,12 @@ export default {
     const user = JSON.parse(window.localStorage.getItem('user')) || {}
     const that = this
     if (user.avatar) {
-      this.backgroundImage = 'background-image:url("' + url.getImage + '/' + user.avatar + '");'
+      console.log(`background-image:url("${config.baseURL}${config.url.getImage}/${user.avatar}");`)
+      this.backgroundImage = `background-image:url("${config.baseURL}${config.url.getImage}/${user.avatar}");`
     }
     bus.$on('changeAvatar', function (url) {
-      that.backgroundImage = 'background-image:url("' + url + '");'
+      console.log(`background-image:url(${url});`)
+      that.backgroundImage = `background-image:url(${url});`
     })
   },
   methods: {
