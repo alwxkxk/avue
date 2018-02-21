@@ -5,16 +5,16 @@
       <el-form id="login-form" :model="loginForm">
         <el-form-item label="用户" class="login-form-item" >
           <el-col :span="20">
-            <el-input v-model="loginForm.name"></el-input>
+            <el-input v-model="loginForm.name" id="loginName"></el-input>
           </el-col>
         </el-form-item>
         <el-form-item label="密码" class="login-form-item">
           <el-col :span="20">
-            <el-input type="password" v-model="loginForm.password"></el-input>
+            <el-input type="password" v-model="loginForm.password" id="loginPassword"></el-input>
           </el-col>
         </el-form-item>
         <div class="login-form-btn">
-          <el-button type="primary" @click="login">登陆</el-button>
+          <el-button type="primary" @click="login" id="loginButton">登陆</el-button>
           <el-button @click="registerFormVisible=true">注册</el-button>
         </div>
         <el-button class="forget-password-string" type="text" @click="forgetPassword">忘记密码？</el-button>
