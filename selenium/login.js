@@ -38,7 +38,8 @@ async function login (name,password){
   .then((e)=>{
     console.log('登陆成功，通过登陆测试')
   })
-  .catch(err=>{console.error('没定位到header元素，登陆失败')})
+  .catch(err=>{console.error('没定位到header元素，登陆测试失败')})
   
+  await driver.sleep(2000);
   await driver.quit();
 }
