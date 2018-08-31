@@ -12,8 +12,8 @@
 
 const localDevelop = false // 是否为本地开发，若是则切换为本地URL
 module.exports = {
-  baseURL: localDevelop ? 'http://localhost:7999' : 'http://www.scaugreen.cn',
-  socketioPath: localDevelop ? '127.0.0.1:7999' : 'http://www.scaugreen.cn:7999', // socketio连接所用,指向akoa
+  baseURL: localDevelop ? 'http://localhost:7999' : 'http://akoa.scaugreen.cn',
+  socketioPath: localDevelop ? '127.0.0.1:7999' : 'http://akoa.scaugreen.cn:7999', // socketio连接所用,指向akoa
 
   headerToken: true, // 将token设置到header里,如果avue与akoa分开不同主机部署则必须为true。
   url: {
