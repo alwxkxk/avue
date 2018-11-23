@@ -1,8 +1,8 @@
 # avue
 
 > A Vue.js project
-- avue与akoa同一台服务器(使用cookie来传送token):http://akoa.scaugreen.cn
-- avue单独部署在七牛云(前后端分离部署了，使用header来传送token):http://peaywop1k.bkt.clouddn.com
+- avue与akoa同一台服务器(使用cookie来传送token):http://akoa.scaugreen.cn （没什么人浏览，我不再部署了，服务器另作它用）
+- avue单独部署在七牛云(前后端分离部署了，使用header来传送token):http://peaywop1k.bkt.clouddn.com （已弃用）
 
 ## 部署
 ### 下载 编译
